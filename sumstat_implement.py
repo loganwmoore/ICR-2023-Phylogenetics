@@ -1,6 +1,7 @@
 from ete3 import PhyloTree, TreeStyle
 import os
 import matplotlib.pyplot as plt
+import numpy as np
 
 fil = '/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setA'
 newicks = []
@@ -241,26 +242,32 @@ data = {'D is Root Label':total_sum1D, 'R is Root Label':total_sum1R, '? is Root
 lbls = list(data.keys())
 vles = list(data.values())
 fig = plt.figure()
+sm1 = fig.add_subplot()
+sm1.set_ylabel('Number of Simulated Trees')
 plt.bar(lbls, vles, color='red', width = 0.5)
+plt.show()
+plt.clf()
 
 data2 = {'MM':total_sum2MM, 'MPDR':total_sum2MPDR, 'MPRD':total_sum2MPRD, 'PP':total_sum2PP}
 lbls2 = list(data2.keys())
 vles2 = list(data2.values())
 fig = plt.figure()
+sm2 = fig.add_subplot()
+sm2.set_ylabel('Number of Simulated Trees')
 plt.bar(lbls2, vles2, color= 'red', width = 0.5)
-
-smst3D = []
-smst3R = []
-for tre in tree_list:
-    smst3D.append(sumstat3(tre)[0])
-    smst3R.append(sumstat3(tre)[1])
-fig = plt.figure()
-sm3 = fig.add_subplot()
-sm3.set_xlabel('Number of Trans Lineages for D Donor')
-sm3.set_ylabel('Number of Trans Lineages for R Donor')
-sm3.scatter(smst3D, smst3R)
 plt.show()
+plt.clf()
 
+st3DR = []
+for tre in tree_list:
+    sumdif = (sumstat3(tre)[0]-sumstat3(tre)[1])
+    st3DR.append(sumdif)
+X = ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13","t14","t15","t16","t17","t18","t19","t20","t21","t22","t23","t24","t25","t26","t27","t28","t29","t30","t31","t32","t33","t34","t35","t36","t37","t38","t39","t40","t41","t42","t43","t44","t45","t46","t47","t48","t49","t50"]
+plt.ylabel('Difference between Lineages when D is donor and when R is donor')
+plt.xlabel('Tree')
+plt.plot(X, st3DR)
+plt.show()
+plt.clf()
 smst5 = []
 smst6 = []
 smst7 = []
@@ -277,28 +284,3 @@ sm567.set_ylabel('Sumstat 6')
 sm567.set_zlabel('Sumstat 7')
 sm567.scatter(smst5, smst6, smst7)
 plt.show()
-#The following functions are not required for the collection of the data
-#They serve only to print the data in a fashion that is easier
-#to read and compare. The if statements in the show_info function are necessary
-#if you want to see which host is M and which is P in a MP topological class
-"""
-def space():
-    for i in range(10):
-        print(" ")"""
-
-
-ts.show_leaf_name=False
-"""def show_info(tree):
-    print(tree.name)
-    print("The root label is: ", sumstat1(tree))
-    #Below allows one to easily tell which host is M and which is P in an MP
-    #topological class
-    if(sumstat2(tree)[0]=="MP"):
-        print("The topological class is:", sumstat2(tree)[0], "If it is MP M is:", sumstat2(tree)[1], "and P is:", sumstat2(tree)[2])
-    else:
-        print("The topological class is:", sumstat2(tree))
-    print("The minimum number of transmissive lineages is: ", sumstat3(tree)[0], "if ",n1," is the donor and ", sumstat3(tree)[1], " if ", n2, " is the donor.")
-    print("The average distance from ",n1," to ",n2," is: ", sumstat5(tree))
-    print("The average distance from ",n1," to ",n1," is: ", sumstat6(tree))
-    print("The average distance from ",n2," to ",n2," is: ", sumstat7(tree))
-    tree.show(tree_style=ts)"""
