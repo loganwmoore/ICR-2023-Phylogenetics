@@ -254,7 +254,6 @@ smst3R = []
 for tre in tree_list:
     smst3D.append(sumstat3(tre)[0])
     smst3R.append(sumstat3(tre)[1])
-print(smst3D, smst3R)
 fig = plt.figure()
 sm3 = fig.add_subplot()
 sm3.set_xlabel('Number of Trans Lineages for D Donor')
