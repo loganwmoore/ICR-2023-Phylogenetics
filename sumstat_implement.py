@@ -2,7 +2,7 @@ from ete3 import PhyloTree, TreeStyle
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-
+st = 'SetA'
 fil = '/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setA'
 newicks = []
 for filename in os.listdir(fil):
@@ -244,6 +244,7 @@ vles = list(data.values())
 fig = plt.figure()
 sm1 = fig.add_subplot()
 sm1.set_ylabel('Number of Simulated Trees')
+sm1.set_title(st)
 plt.bar(lbls, vles, color='red', width = 0.5)
 plt.show()
 plt.clf()
@@ -254,17 +255,21 @@ vles2 = list(data2.values())
 fig = plt.figure()
 sm2 = fig.add_subplot()
 sm2.set_ylabel('Number of Simulated Trees')
+sm2.set_title(st)
 plt.bar(lbls2, vles2, color= 'red', width = 0.5)
 plt.show()
 plt.clf()
+
 
 st3DR = []
 for tre in tree_list:
     sumdif = (sumstat3(tre)[0]-sumstat3(tre)[1])
     st3DR.append(sumdif)
-X = ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13","t14","t15","t16","t17","t18","t19","t20","t21","t22","t23","t24","t25","t26","t27","t28","t29","t30","t31","t32","t33","t34","t35","t36","t37","t38","t39","t40","t41","t42","t43","t44","t45","t46","t47","t48","t49","t50"]
+X = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50"]
+plt.tick_params(axis='both', which='major', labelsize=5)
 plt.ylabel('Difference between Lineages when D is donor and when R is donor')
 plt.xlabel('Tree')
+plt.title(st)
 plt.plot(X, st3DR)
 plt.show()
 plt.clf()
@@ -282,5 +287,6 @@ sm567 = fig.add_subplot(projection='3d')
 sm567.set_xlabel('Sumstat 5')
 sm567.set_ylabel('Sumstat 6')
 sm567.set_zlabel('Sumstat 7')
+sm567.set_title(st)
 sm567.scatter(smst5, smst6, smst7)
 plt.show()
