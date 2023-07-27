@@ -1,4 +1,4 @@
-# ICR-2023-Phylogenetics(WIP)
+# ICR-2023-Phylogenetics
 
 ## Background
 
@@ -7,16 +7,11 @@ This project provides a comparison of the effectivness of different summarizing 
 ##
 
 ##Running the code
-Be sure to modify the code to fit your file paths
+You must first make sure that the 'simulated_trees' file is in the same directory as the sumstat_implement.py file
 To run the code you must first activate ete3(example using conda):
 
 """
 conda activate ete3
 python3 sumstat_implement.py
 """
-
-You can save the output with:
-
-"""
-python3 sumstat_implement.py>graphs.out
-"""
+ The graphs produced by the program are automatically saved as png files under the newly created directory: sumstat_graphs

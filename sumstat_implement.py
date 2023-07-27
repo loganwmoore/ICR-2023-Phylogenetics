@@ -103,7 +103,7 @@ def sumstat3(tree):
 
     return (lineage_transA, lineage_transB)
 
-#The following function finds the average distance between A and B nodes
+#The following function finds the average distance between D and R nodes
 def sumstat5(tree):
     numcount = 0
     nameA = tree.get_leaves_by_name(n1)
@@ -115,7 +115,7 @@ def sumstat5(tree):
             total+= aname.get_distance(bname)
     return total/numcount
 
-#This finds the average distance between A and other A nodes
+#This finds the average distance between D and other D nodes
 def sumstat6(tree):
     
     numcount = 0
@@ -128,7 +128,7 @@ def sumstat6(tree):
         numcount-=1
     return total/numcount
 
-#This finds the average distance between B and other B nodes
+#This finds the average distance between R and other R nodes
 def sumstat7(tree):
     numcount = 0
     nameB = tree.get_leaves_by_name(n2)
@@ -141,7 +141,7 @@ def sumstat7(tree):
     return total/numcount
 
 st = ['setA','setB','setC','setD','setE','setF','setG','setH','setI','setJ','setK','setL','setM','setN','setO','setP','setQ','setR','setS','setT','setU','setV','setW']
-fil_list = ['/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setA', '/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setB','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setC','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setD','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setE','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setF','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setG','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setH','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setI','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setJ','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setK','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setL','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setM','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setN','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setO','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setP','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setQ','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setR','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setS','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setT','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setU','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setV','/home/loganwmoore/ICR-2023-Phylogenetics/simulated_trees/setW']
+
 newicks = []
 DRoot=[]
 RRoot=[]
@@ -150,33 +150,14 @@ MMTotal=[]
 MPDRTotal=[]
 MPRDTotal=[]
 PPTotal=[]
-diffA=[]
-diffB=[]
-diffC=[]
-diffD=[]
-diffE=[]
-diffF=[]
-diffG=[]
-diffH=[]
-diffI=[]
-diffJ=[]
-diffK=[]
-diffL=[]
-diffM=[]
-diffN=[]
-diffO=[]
-diffP=[]
-diffQ=[]
-diffR=[]
-diffS=[]
-diffT=[]
-diffU=[]
-diffV=[]
-diffW=[]
-diff_list=[diffA,diffB,diffC,diffD,diffE,diffF,diffG,diffH,diffI,diffJ,diffK,diffL,diffM,diffN,diffO,diffP,diffQ,diffR,diffS,diffT,diffU,diffV,diffW]
+diff_list=[]
+dd_rr_list=[]
+dr_dd_list=[]
+dr_rr_list=[]
 
 for i in range(23):
-    fil = fil_list[i]
+    newicks = []
+    fil = os.path.join('simulated_trees/',st[i])
     for filename in os.listdir(fil):
         if filename.endswith('.txt'):
             with open(os.path.join(fil, filename)) as f:
@@ -254,20 +235,20 @@ for i in range(23):
     total_sum2MPRD=0
     total_sum2PP=0
     for tr in tree_list:
-    if(sumstat1(tr)=="D"):
-        total_sum1D+=1
-    elif(sumstat1(tr)=="R"):
-        total_sum1R+=1
-    elif(sumstat1(tr)=="?"):
-        total_sum1Q+=1
-    if(sumstat2(tr)=="MM"):
-        total_sum2MM+=1
-    elif(sumstat2(tr)=="MPDR"):
-        total_sum2MPDR+=1
-    elif(sumstat2(tr)=="MPRD"):
-        total_sum2MPRD+=1
-    elif(sumstat2(tr)=="PP"):
-        total_sum2PP+=1
+        if(sumstat1(tr)=="D"):
+            total_sum1D+=1
+        elif(sumstat1(tr)=="R"):
+            total_sum1R+=1
+        elif(sumstat1(tr)=="?"):
+            total_sum1Q+=1
+        if(sumstat2(tr)=="MM"):
+            total_sum2MM+=1
+        elif(sumstat2(tr)=="MPDR"):
+            total_sum2MPDR+=1
+        elif(sumstat2(tr)=="MPRD"):
+            total_sum2MPRD+=1
+        elif(sumstat2(tr)=="PP"):
+            total_sum2PP+=1
     
     DRoot.append(total_sum1D)
     RRoot.append(total_sum1R)
@@ -276,57 +257,130 @@ for i in range(23):
     MPDRTotal.append(total_sum2MPDR)
     MPRDTotal.append(total_sum2MPRD)
     PPTotal.append(total_sum2PP)
+    dif = []
+    ddrr_total_diff = []
+    drdd_total_diff = []
+    drrr_total_diff = []
     for tre in tree_list:
         sumdif = (sumstat3(tre)[0]-sumstat3(tre)[1])
-        diff_list[i].append(sumdif)
+        dif.append(sumdif)
+        ddrrdif = (sumstat6(tre)-sumstat7(tre))
+        ddrr_total_diff.append(ddrrdif)
+        drdddif = (sumstat5(tre)-sumstat6(tre))
+        drdd_total_diff.append(drdddif)
+        drrrdif = (sumstat5(tre)-sumstat7(tre))
+        drrr_total_diff.append(drrrdif)
+    diff_list.append(dif)
+    dd_rr_list.append(ddrr_total_diff)
+    dr_dd_list.append(drdd_total_diff)
+    dr_rr_list.append(drrr_total_diff)
 
-        
-data = {'D is Root Label':total_sum1D, 'R is Root Label':total_sum1R, '? is RootLabel':total_sum1Q}
-lbls = list(data.keys())
-vles = list(data.values())
-fig = plt.figure()
-sm1 = fig.add_subplot()
-sm1.set_ylabel('Number of Simulated Trees')
-sm1.set_title(st)
-plt.bar(lbls, vles, color='red', width = 0.5)
-plt.show()
+
+if not os.path.isdir("sumstat_graphs"):
+    os.makedirs("sumstat_graphs")
+script_dir = os.path.dirname('sumstat_graphs/')
+
+X = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W']
+X_axis=np.arange(len(X))
+plt.bar(X_axis+0.2, DRoot, 0.4, label = 'D Root Label')
+plt.bar(X_axis-0.2, RRoot, 0.4, label = 'R Root Label')
+plt.bar(X_axis, QRoot, 0.4, label = '? Root Label')
+plt.xticks(X_axis, X)
+plt.xlabel("Set")
+plt.ylabel("Trees")
+plt.title("Sumstat 1")
+plt.legend()
+file_name = 'sumstat1graph'
+results_dir = os.path.join(script_dir, 'sumstat12graphs/')
+if not os.path.isdir(results_dir):
+    os.makedirs(results_dir)
+plt.savefig(results_dir+file_name)
 plt.clf()
 
-data2 = {'MM':total_sum2MM, 'MPDR':total_sum2MPDR, 'MPRD':total_sum2MPRD, 'PP':total_sum2PP}
-lbls2 = list(data2.keys())
-vles2 = list(data2.values())
-fig = plt.figure()
-sm2 = fig.add_subplot()
-sm2.set_ylabel('Number of Simulated Trees')
-sm2.set_title(st)
-plt.bar(lbls2, vles2, color= 'red', width = 0.5)
-plt.show()
+plt.figure(figsize=(16, 9))
+plt.bar(X_axis+0.15, MMTotal, 0.3, label = 'MM')
+plt.bar(X_axis-0.15, MPDRTotal, 0.3, label = 'MPDR')
+plt.bar(X_axis, MPRDTotal, 0.3, label = 'MPRD')
+plt.bar(X_axis+0.3, PPTotal, 0.3, label = 'PP')
+plt.xticks(X_axis, X)
+plt.xlabel("Set")
+plt.ylabel("Trees")
+plt.title("Sumstat 2")
+plt.legend()
+file_name = 'sumstat2graph'
+plt.savefig(results_dir+file_name)
 plt.clf()
+Tr = ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50"]
+st3range = [-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]
+Y_axis = np.arange(len(Tr))
+X_axis = np.arange(len(st3range))
+bins = np.arange(-11,8)-0.5
+results_dir = os.path.join(script_dir, 'sumstat3_histograms/')
+if not os.path.isdir(results_dir):
+    os.makedirs(results_dir)
+filenames = ["st3AGraph","st3BGraph","st3CGraph","st3DGraph","st3EGraph","st3FGraph","st3GGraph","st3HGraph","st3IGraph","st3JGraph","st3KGraph","st3LGraph","st3MGraph","st3NGraph","st3OGraph","st3PGraph","st3QGraph","st3RGraph","st3SGraph","st3TGraph","st3UGraph","st3VGraph","st3WGraph"]
+for i in range(23):
+    file_name = filenames[i]
+    plt.hist(diff_list[i], bins, range=[-11, 8], edgecolor = 'black', linewidth=1)
+    plt.yticks(Y_axis, Tr)
+    plt.xticks(range(-11, 8))
+    plt.ylabel("Trees")
+    plt.xlabel("Difference in Lineage if D is Donor vs if R is Donor")
+    graph_title = ("Sumstat3",st[i])
+    plt.title(graph_title)
+    plt.savefig(results_dir+file_name)
+    plt.clf()
 
 
+bins = np.arange(-3,5)-0.5
+results_dir = os.path.join(script_dir, 'dd-rrdistance/')
+if not os.path.isdir(results_dir):
+    os.makedirs(results_dir)
+filenames = ["dd-rrA","dd-rrB","dd-rrC","dd-rrD","dd-rrE","dd-rrF","dd-rrG","dd-rrH","dd-rrI","dd-rrJ","dd-rrK","dd-rrL","dd-rrM","dd-rrN","dd-rrO","dd-rrP","dd-rrQ","dd-rrR","dd-rrS","dd-rrT","dd-rrU","dd-rrV","dd-rrW"]
+for i in range(23):
+    file_name = filenames[i]
+    plt.hist(dd_rr_list[i], bins, range=[-3,5], edgecolor = 'black', linewidth=1)
+    plt.yticks(Y_axis, Tr)
+    plt.xticks(range(-3, 5))
+    plt.ylabel("Trees")
+    plt.xlabel("Difference in Distance between D Nodes and R Nodes")
+    graph_title = ("DD-RR Distance", st[i])
+    plt.title(graph_title)
+    plt.savefig(results_dir+file_name)
+    plt.clf()
 
-X = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50"]
-plt.tick_params(axis='both', which='major', labelsize=5)
-plt.ylabel('Difference between Lineages when D is donor and when R is donor')
-plt.xlabel('Tree')
-plt.title(st)
-plt.plot(X, st3DR)
-plt.show()
-plt.clf()
-smst5 = []
-smst6 = []
-smst7 = []
+bins = np.arange(-3,5)-0.5
+results_dir = os.path.join(script_dir, 'dr-dddistance/')
+if not os.path.isdir(results_dir):
+    os.makedirs(results_dir)
+filenames = ["dr-ddA","dr-ddB","dr-ddC","dr-ddD","dr-ddE","dr-ddF","dr-ddG","dr-ddH","dr-ddI","dr-ddJ","dr-ddK","dr-ddL","dr-ddM","dr-ddN","dr-ddO","dr-ddP","dr-ddQ","dr-ddR","dr-ddS","dr-ddT","dr-ddU","dr-ddV","dr-ddW"]
+for i in range(23):
+    file_name = filenames[i]
+    plt.hist(dr_dd_list[i], bins, range=[-3,5], edgecolor = 'black', linewidth=1)
+    plt.yticks(Y_axis, Tr)
+    plt.xticks(range(-3, 5))
+    plt.ylabel("Trees")
+    plt.xlabel("Difference in Distance between D and R Nodes and D Nodes")
+    graph_title = ("DR-DD Distance",st[i])
+    plt.title(graph_title)
+    plt.savefig(results_dir+file_name)
+    plt.clf()
 
-for tre in tree_list:
-    smst5.append(sumstat5(tre))
-    smst6.append(sumstat6(tre))
-    smst7.append(sumstat7(tre))
+bins = np.arange(-3,5)-0.5
+results_dir = os.path.join(script_dir, 'dr-rrdistance/')
+if not os.path.isdir(results_dir):
+    os.makedirs(results_dir)
+filenames = ["dr-rrA","dr-rrB","dr-rrC","dr-rrD","dr-rrE","dr-rrF","dr-rrG","dr-rrH","dr-rrI","dr-rrJ","dr-rrK","dr-rrL","dr-rrM","dr-rrN","dr-rrO","dr-rrP","dr-rrQ","dr-rrR","dr-rrS","dr-rrT","dr-rrU","dr-rrV","dr-rrW"]
+for i in range(23):
+    file_name = filenames[i]
+    plt.hist(dr_rr_list[i], bins, range = [-3,5], edgecolor = 'black', linewidth=1)
+    plt.yticks(Y_axis, Tr)
+    plt.xticks(range(-3, 5))
+    plt.ylabel("Trees")
+    plt.xlabel("Difference in Distance between D and R Nodes and R Nodes")
+    graph_title = ("DR-RR Distance", st[i])
+    plt.title(graph_title)
+    plt.savefig(results_dir+file_name)
+    plt.clf()
 
-fig = plt.figure()
-sm567 = fig.add_subplot(projection='3d')
-sm567.set_xlabel('Sumstat 5')
-sm567.set_ylabel('Sumstat 6')
-sm567.set_zlabel('Sumstat 7')
-sm567.set_title(st)
-sm567.scatter(smst5, smst6, smst7)
-plt.show()
+
