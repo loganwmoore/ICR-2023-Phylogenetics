@@ -288,9 +288,9 @@ plt.bar(X_axis, QRoot, 0.4, label = '? Root Label')
 plt.xticks(X_axis, X)
 plt.xlabel("Set")
 plt.ylabel("Trees")
-plt.title("Sumstat 1")
+plt.title("Root Label")
 plt.legend()
-file_name = 'sumstat1graph'
+file_name = 'sumstat1graph.pdf'
 results_dir = os.path.join(script_dir, 'sumstat12graphs/')
 if not os.path.isdir(results_dir):
     os.makedirs(results_dir)
@@ -305,82 +305,119 @@ plt.bar(X_axis+0.3, PPTotal, 0.3, label = 'PP')
 plt.xticks(X_axis, X)
 plt.xlabel("Set")
 plt.ylabel("Trees")
-plt.title("Sumstat 2")
+plt.title("Topological Class")
 plt.legend()
-file_name = 'sumstat2graph'
+file_name = 'sumstat2graph.pdf'
 plt.savefig(results_dir+file_name)
 plt.clf()
+
+
+plt.rcParams.update({'font.size': 3})
 Tr = ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50"]
+TrS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,21, 22, 23, 24, 25, 26, 27 ,28, 29, 30]
 st3range = [-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]
-Y_axis = np.arange(len(Tr))
+Y_axis = np.arange(len(TrS))
 X_axis = np.arange(len(st3range))
-bins = np.arange(-11,8)-0.5
-results_dir = os.path.join(script_dir, 'sumstat3_histograms/')
+bins = np.arange(-11,8,)-0.25
+results_dir = os.path.join(script_dir, 'sumstat_histograms/')
 if not os.path.isdir(results_dir):
     os.makedirs(results_dir)
-filenames = ["st3AGraph","st3BGraph","st3CGraph","st3DGraph","st3EGraph","st3FGraph","st3GGraph","st3HGraph","st3IGraph","st3JGraph","st3KGraph","st3LGraph","st3MGraph","st3NGraph","st3OGraph","st3PGraph","st3QGraph","st3RGraph","st3SGraph","st3TGraph","st3UGraph","st3VGraph","st3WGraph"]
+figure, axis = plt.subplots(nrows=5,ncols=5)
+row = 0
+col = 0
+plt.title('Difference in Lineages if D is donor vs if R is donor', x=-2, y=6, fontsize = 10)
 for i in range(23):
-    file_name = filenames[i]
-    plt.hist(diff_list[i], bins, range=[-11, 8], edgecolor = 'black', linewidth=1)
-    plt.yticks(Y_axis, Tr)
-    plt.xticks(range(-11, 8))
-    plt.ylabel("Trees")
-    plt.xlabel("Difference in Lineage if D is Donor vs if R is Donor")
-    graph_title = ("Sumstat3",st[i])
-    plt.title(graph_title)
-    plt.savefig(results_dir+file_name)
-    plt.clf()
+    if col==5:
+        row +=1
+        col = 0
+    if row==4 and col==3:
+        break
+    file_name = 'sumstat3hist.pdf'
+    axis[row, col].hist(diff_list[i], bins, range=[-11, 8], edgecolor = 'black', linewidth=1)
+    axis[row, col].set_yticks(Y_axis, TrS)
+    axis[row, col].set_xticks(range(-11, 8))
+    axis[row, col].set_ylabel("Trees")
+    axis[row, col].set_xlabel('D Donor Lineages-R Donor Lineages')
+    axis[row, col].set_title(st[i], y=.75)
+    col+=1
+plt.savefig(results_dir+file_name)
+plt.clf()
 
 
-bins = np.arange(-3,5)-0.5
-results_dir = os.path.join(script_dir, 'dd-rrdistance/')
+Y_axis = np.arange(len(Tr))
+plt.rcParams.update({'font.size': 3})
+bins = np.arange(-3, 5,0.25)-0.125
 if not os.path.isdir(results_dir):
     os.makedirs(results_dir)
-filenames = ["dd-rrA","dd-rrB","dd-rrC","dd-rrD","dd-rrE","dd-rrF","dd-rrG","dd-rrH","dd-rrI","dd-rrJ","dd-rrK","dd-rrL","dd-rrM","dd-rrN","dd-rrO","dd-rrP","dd-rrQ","dd-rrR","dd-rrS","dd-rrT","dd-rrU","dd-rrV","dd-rrW"]
+figure, axis = plt.subplots(nrows=5,ncols=5)
+row = 0
+col = 0
+plt.title('Average Tip Distance DD-RR', x=-2, y=6, fontsize=10)
 for i in range(23):
-    file_name = filenames[i]
-    plt.hist(dd_rr_list[i], bins, range=[-3,5], edgecolor = 'black', linewidth=1)
-    plt.yticks(Y_axis, Tr)
-    plt.xticks(range(-3, 5))
-    plt.ylabel("Trees")
-    plt.xlabel("Difference in Distance between D Nodes and R Nodes")
-    graph_title = ("DD-RR Distance", st[i])
-    plt.title(graph_title)
-    plt.savefig(results_dir+file_name)
-    plt.clf()
+    if col==5:
+        row+=1
+        col=0
+    if row==4 and col==3:
+        break
+    file_name = 'dd_rr_distance.pdf'
+    axis[row, col].hist(dd_rr_list[i], bins, range=[-3,5], edgecolor = 'black', linewidth=1)
+    axis[row, col].set_yticks(Y_axis, Tr)
+    axis[row, col].set_xticks(range(-3,5))
+    axis[row, col].set_ylabel("Trees")
+    axis[row, col].set_xlabel("DD-RR Distance")
+    axis[row, col].set_title(st[i], y=.75)
+    col+=1
+plt.savefig(results_dir+file_name)
+plt.clf()
 
-bins = np.arange(-3,5)-0.5
-results_dir = os.path.join(script_dir, 'dr-dddistance/')
+plt.rcParams.update({'font.size': 3})
+bins = np.arange(-3,5,0.25)-0.125
 if not os.path.isdir(results_dir):
     os.makedirs(results_dir)
-filenames = ["dr-ddA","dr-ddB","dr-ddC","dr-ddD","dr-ddE","dr-ddF","dr-ddG","dr-ddH","dr-ddI","dr-ddJ","dr-ddK","dr-ddL","dr-ddM","dr-ddN","dr-ddO","dr-ddP","dr-ddQ","dr-ddR","dr-ddS","dr-ddT","dr-ddU","dr-ddV","dr-ddW"]
+figure, axis = plt.subplots(nrows=5, ncols=5)
+row = 0
+col = 0
+plt.title("Average Tip Distance DR-DD", x=-2, y=6, fontsize=10)
 for i in range(23):
-    file_name = filenames[i]
-    plt.hist(dr_dd_list[i], bins, range=[-3,5], edgecolor = 'black', linewidth=1)
-    plt.yticks(Y_axis, Tr)
-    plt.xticks(range(-3, 5))
-    plt.ylabel("Trees")
-    plt.xlabel("Difference in Distance between D and R Nodes and D Nodes")
-    graph_title = ("DR-DD Distance",st[i])
-    plt.title(graph_title)
-    plt.savefig(results_dir+file_name)
-    plt.clf()
+    if col==5:
+        row+=1
+        col=0
+    if row==4 and col==3:
+        break
+    file_name = 'dr_dd_distance.pdf'
+    axis[row, col].hist(dr_dd_list[i], bins, range=[-3,5], edgecolor = 'black', linewidth=1)
+    axis[row, col].set_yticks(Y_axis, Tr)
+    axis[row, col].set_xticks(range(-3,5))
+    axis[row, col].set_ylabel("Trees")
+    axis[row, col].set_xlabel("DR-DD Distance")
+    axis[row, col].set_title(st[i], y=.75)
+    col+=1
+plt.savefig(results_dir+file_name)
+plt.clf()
 
-bins = np.arange(-3,5)-0.5
-results_dir = os.path.join(script_dir, 'dr-rrdistance/')
+plt.rcParams.update({'font.size': 3})
+bins = np.arange(-3,5,0.25)-0.125
 if not os.path.isdir(results_dir):
     os.makedirs(results_dir)
-filenames = ["dr-rrA","dr-rrB","dr-rrC","dr-rrD","dr-rrE","dr-rrF","dr-rrG","dr-rrH","dr-rrI","dr-rrJ","dr-rrK","dr-rrL","dr-rrM","dr-rrN","dr-rrO","dr-rrP","dr-rrQ","dr-rrR","dr-rrS","dr-rrT","dr-rrU","dr-rrV","dr-rrW"]
+figure, axis = plt.subplots(nrows=5,ncols=5)
+row = 0
+col = 0
+plt.title("Average Tip Distance DR-RR", x=-2, y=6, fontsize=10)
 for i in range(23):
-    file_name = filenames[i]
-    plt.hist(dr_rr_list[i], bins, range = [-3,5], edgecolor = 'black', linewidth=1)
-    plt.yticks(Y_axis, Tr)
-    plt.xticks(range(-3, 5))
-    plt.ylabel("Trees")
-    plt.xlabel("Difference in Distance between D and R Nodes and R Nodes")
-    graph_title = ("DR-RR Distance", st[i])
-    plt.title(graph_title)
-    plt.savefig(results_dir+file_name)
-    plt.clf()
+    if col==5:
+        row+=1
+        col=0
+    if row==4 and col==3:
+        break
+    file_name = 'dr_rr_distance.pdf'
+    axis[row, col].hist(dr_rr_list[i], bins, range = [-3,5], edgecolor = 'black', linewidth=1)
+    axis[row, col].set_yticks(Y_axis, Tr)
+    axis[row, col].set_xticks(range(-3,5))
+    axis[row, col].set_ylabel("Trees")
+    axis[row, col].set_xlabel("DR-RR Distance")
+    axis[row, col].set_title(st[i], y=.75)
+    col+=1
+plt.savefig(results_dir+file_name)
+plt.clf()
 
 
