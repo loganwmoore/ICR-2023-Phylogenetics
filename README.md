@@ -1,4 +1,4 @@
-# ICR-2023-Phylogenetics
+# phylogenetics-sumstat-analysis
 
 ## Background
 
