@@ -32,6 +32,11 @@ Then you must remember to activate your conda enviorment to use ete3:
 conda activate ete3
 """
 
+You must also have matplotlib installed. If you do not have it installed, install using pip by:
+"""
+pip install matplotlib
+"""
+
 
 From there run the program with:
 """
@@ -39,4 +44,12 @@ python3 sumstat_implement.py
 """
 
 
- The graphs produced by the program are automatically saved as pdf files under the newly created directory: sumstat_graphs.
+ The graphs produced by the program are automatically saved as pdf files under the newly created directory: sumstat_graphs. Within this new directory are two subdirectories called sumstat12graphs and sumstat_histograms.After entering the directory with:
+"""
+cd sumstat_graphs/sumstat12graphs/
+"""
+
+You can then open the pdf of your choice with:
+"""
+evince FILENAME.pdf
+"""
