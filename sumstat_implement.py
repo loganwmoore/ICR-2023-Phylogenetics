@@ -155,6 +155,11 @@ dd_rr_list=[]
 dr_dd_list=[]
 dr_rr_list=[]
 
+correctstat1 = []
+correctstat2 = []
+correctstat3 = []
+correcttotal = []
+
 for i in range(23):
     newicks = []
     fil = os.path.join('simulated_trees/',st[i])
@@ -234,47 +239,61 @@ for i in range(23):
     total_sum2MPDR=0
     total_sum2MPRD=0
     total_sum2PP=0
-    for tr in tree_list:
-        if(sumstat1(tr)=="D"):
-            total_sum1D+=1
-        elif(sumstat1(tr)=="R"):
-            total_sum1R+=1
-        elif(sumstat1(tr)=="?"):
-            total_sum1Q+=1
-        if(sumstat2(tr)=="MM"):
-            total_sum2MM+=1
-        elif(sumstat2(tr)=="MPDR"):
-            total_sum2MPDR+=1
-        elif(sumstat2(tr)=="MPRD"):
-            total_sum2MPRD+=1
-        elif(sumstat2(tr)=="PP"):
-            total_sum2PP+=1
     
-    DRoot.append(total_sum1D)
-    RRoot.append(total_sum1R)
-    QRoot.append(total_sum1Q)
-    MMTotal.append(total_sum2MM)
-    MPDRTotal.append(total_sum2MPDR)
-    MPRDTotal.append(total_sum2MPRD)
-    PPTotal.append(total_sum2PP)
     dif = []
     ddrr_total_diff = []
     drdd_total_diff = []
     drrr_total_diff = []
+    majorcorrectset = 0
+    correctstat3set = 0
     for tre in tree_list:
+        majorcorrect = 0
+        if(sumstat1(tre)=="D"):
+            total_sum1D+=1
+            majorcorrect+=1
+        elif(sumstat1(tre)=="R"):
+            total_sum1R+=1
+        elif(sumstat1(tre)=="?"):
+            total_sum1Q+=1
+        if(sumstat2(tre)=="MM"):
+            total_sum2MM+=1
+        elif(sumstat2(tre)=="MPDR"):
+            total_sum2MPDR+=1
+        elif(sumstat2(tre)=="MPRD"):
+            total_sum2MPRD+=1
+            majorcorrect+=1
+        elif(sumstat2(tre)=="PP"):
+            total_sum2PP+=1
         sumdif = (sumstat3(tre)[0]-sumstat3(tre)[1])
         dif.append(sumdif)
+        if sumdif<0:
+            majorcorrect+=1
+            correctstat3set+=1
         ddrrdif = (sumstat6(tre)-sumstat7(tre))
         ddrr_total_diff.append(ddrrdif)
         drdddif = (sumstat5(tre)-sumstat6(tre))
         drdd_total_diff.append(drdddif)
         drrrdif = (sumstat5(tre)-sumstat7(tre))
         drrr_total_diff.append(drrrdif)
+        if majorcorrect>=2:
+            majorcorrectset+=1
+    correcttotal.append(majorcorrectset)
+
+    DRoot.append(total_sum1D)
+    correctstat1.append(total_sum1D)
+    RRoot.append(total_sum1R)
+    QRoot.append(total_sum1Q)
+    MMTotal.append(total_sum2MM)
+    MPDRTotal.append(total_sum2MPDR)
+    MPRDTotal.append(total_sum2MPRD)
+    correctstat2.append(total_sum2MPRD)
+    PPTotal.append(total_sum2PP)
     diff_list.append(dif)
+    correctstat3.append(correctstat3set)
     dd_rr_list.append(ddrr_total_diff)
     dr_dd_list.append(drdd_total_diff)
     dr_rr_list.append(drrr_total_diff)
-
+    
 
 if not os.path.isdir("sumstat_graphs"):
     os.makedirs("sumstat_graphs")
@@ -325,7 +344,9 @@ if not os.path.isdir(results_dir):
 figure, axis = plt.subplots(nrows=5,ncols=5)
 row = 0
 col = 0
-plt.title('Difference in Lineages if D is donor vs if R is donor', x=-2, y=6, fontsize = 10)
+plt.title('Difference in Lineages if D is donor vs if R is donor', x=-2, y=6, fontsize = 15)
+figure.text(0.04, 0.5, 'Trees', va='center', rotation='vertical', fontsize = 10)
+plt.xlabel('D Donor Lineages-R Donor Lineages', x=-2, fontsize = 10)
 for i in range(23):
     if col==5:
         row +=1
@@ -336,8 +357,6 @@ for i in range(23):
     axis[row, col].hist(diff_list[i], bins, range=[-11, 8], edgecolor = 'black', linewidth=1)
     axis[row, col].set_yticks(Y_axis, TrS)
     axis[row, col].set_xticks(range(-11, 8))
-    axis[row, col].set_ylabel("Trees")
-    axis[row, col].set_xlabel('D Donor Lineages-R Donor Lineages')
     axis[row, col].set_title(st[i], y=.75)
     col+=1
 plt.savefig(results_dir+file_name)
@@ -352,7 +371,9 @@ if not os.path.isdir(results_dir):
 figure, axis = plt.subplots(nrows=5,ncols=5)
 row = 0
 col = 0
-plt.title('Average Tip Distance DD-RR', x=-2, y=6, fontsize=10)
+plt.title('Average Tip Distance DD-RR', x=-2, y=6, fontsize=15)
+figure.text(0.04, 0.5, 'Trees', va='center', rotation='vertical', fontsize = 10)
+plt.xlabel("DD-RR Distance", x=-2, fontsize=10)
 for i in range(23):
     if col==5:
         row+=1
@@ -363,8 +384,6 @@ for i in range(23):
     axis[row, col].hist(dd_rr_list[i], bins, range=[-3,5], edgecolor = 'black', linewidth=1)
     axis[row, col].set_yticks(Y_axis, Tr)
     axis[row, col].set_xticks(range(-3,5))
-    axis[row, col].set_ylabel("Trees")
-    axis[row, col].set_xlabel("DD-RR Distance")
     axis[row, col].set_title(st[i], y=.75)
     col+=1
 plt.savefig(results_dir+file_name)
@@ -377,7 +396,9 @@ if not os.path.isdir(results_dir):
 figure, axis = plt.subplots(nrows=5, ncols=5)
 row = 0
 col = 0
-plt.title("Average Tip Distance DR-DD", x=-2, y=6, fontsize=10)
+plt.title("Average Tip Distance DR-DD", x=-2, y=6, fontsize=15)
+figure.text(0.04, 0.5, 'Trees', va='center', rotation='vertical', fontsize = 10)
+plt.xlabel("DR-DD Distance", x=-2, fontsize=10)
 for i in range(23):
     if col==5:
         row+=1
@@ -388,8 +409,6 @@ for i in range(23):
     axis[row, col].hist(dr_dd_list[i], bins, range=[-3,5], edgecolor = 'black', linewidth=1)
     axis[row, col].set_yticks(Y_axis, Tr)
     axis[row, col].set_xticks(range(-3,5))
-    axis[row, col].set_ylabel("Trees")
-    axis[row, col].set_xlabel("DR-DD Distance")
     axis[row, col].set_title(st[i], y=.75)
     col+=1
 plt.savefig(results_dir+file_name)
@@ -402,7 +421,9 @@ if not os.path.isdir(results_dir):
 figure, axis = plt.subplots(nrows=5,ncols=5)
 row = 0
 col = 0
-plt.title("Average Tip Distance DR-RR", x=-2, y=6, fontsize=10)
+plt.title("Average Tip Distance DR-RR", x=-2, y=6, fontsize=15)
+figure.text(0.04, 0.5, 'Trees', va='center', rotation='vertical', fontsize = 10)
+plt.xlabel("DR-RR Distance", x=-2, fontsize = 10)
 for i in range(23):
     if col==5:
         row+=1
@@ -413,11 +434,21 @@ for i in range(23):
     axis[row, col].hist(dr_rr_list[i], bins, range = [-3,5], edgecolor = 'black', linewidth=1)
     axis[row, col].set_yticks(Y_axis, Tr)
     axis[row, col].set_xticks(range(-3,5))
-    axis[row, col].set_ylabel("Trees")
-    axis[row, col].set_xlabel("DR-RR Distance")
     axis[row, col].set_title(st[i], y=.75)
     col+=1
 plt.savefig(results_dir+file_name)
 plt.clf()
 
-
+file_name = "correctsumstats.pdf"
+sets = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+X_axis = np.arange(len(sets))
+plt.bar(X_axis - 0.3, correctstat1, 0.3, label = 'Number of Sumstat 1 Correct')
+plt.bar(X_axis - 0.15, correctstat2, 0.3, label = 'Number of Sumstat 2 Correct')
+plt.bar(X_axis, correctstat3, 0.3, label = 'Number of Sumstat 3 Correct')
+plt.bar(X_axis + 0.15, correcttotal, 0.3, label = 'Number of Correct using Majority')
+plt.xticks(X_axis, sets)
+plt.xlabel("Sets", fontsize=10)
+plt.ylabel("Trees", fontsize=10)
+plt.title("Number of Correct Summary Statistics", fontsize=15)
+plt.legend()
+plt.savefig(file_name)

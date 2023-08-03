@@ -1,0 +1,123 @@
+% Copyright (c) 2022 by Lars Spreng
+% This work is licensed under the Creative Commons Attribution 4.0 International License. 
+% To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% You can add your packages and commands to the loadslides.tex file. 
+% The files in the folder "styles" can be modified to change the layout and design of your slides.
+% I have included examples on how to use the template below. 
+% Some of these examples are taken from the Metropolis template.
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+\documentclass[
+10pt,aspectratio=169,notheorems,hyperref={pdfauthor=whatever}
+]{beamer}
+
+\input{loadslides.tex} % Loads packages and some defined commands
+
+\title[
+% Text entered here will appear in the bottom middle
+]{Using Phylogeny Summary Statistics to Find Direction of Disease Transmission}
+
+
+\author[
+% Text entered here will appear in the bottom left corner
+]{
+    Logan Moore 
+}
+
+\institute{
+    Institute for Computing in Research}
+\date{\today}
+
+\begin{document}
+
+% Generate title page
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+  \titlepage
+\end{frame}
+}
+\addtocounter{framenumber}{-1}
+
+\section{Phylogenetic Trees}
+\begin{frame}
+  \centering
+  \includegraphics[width=5cm, angle=90]{phylotree}
+  \includegraphics[width=5cm]{circle_phylo}
+\end{frame}
+
+\section{Tested Trees}
+\begin{frame}
+  \centering
+  \includegraphics[width=10cm]{histories}
+ \end{frame}
+
+\section{Summary Statistic 1}
+\subsection{Description}
+\begin{frame}
+  \centering
+  \includegraphics[width=5cm, angle=0]{sumstat1example}
+  \includegraphics[width=5cm, angle=0]{sumstat1example2}
+\end{frame}
+
+\subsection{Data}
+\begin{frame}
+  \centering
+  \includegraphics[width=10cm, angle=0]{sumstat1graph}
+\end{frame}
+
+\section{Summary Statistic 2}
+\subsection{Description}
+\begin{frame}
+  \centering
+  \includegraphics[width=5cm, angle=0]{sumstat2example}
+  \includegraphics[width=5cm, angle=0]{sumstat2example2}
+  \includegraphics[width=5cm, angle=0]{sumstat2example3}
+\end{frame}
+
+\subsection{Data}
+\begin{frame}
+  \centering
+  \includegraphics[width=10cm, angle=0]{sumstat2graph}
+\end{frame}
+
+\section{Summary Statistic 3}
+\subsection{Description}
+\begin{frame}
+  \centering
+  \includegraphics[width=5cm, angle=0]{sumstat3example}
+  \includegraphics[width=5cm, angle=0]{sumstat3example2}
+\end{frame}
+
+\subsection{Data}
+\begin{frame}
+  \centering
+  \includegraphics[width=10cm, angle=0]{sumstat3hist}
+\end{frame}
+
+\section{Summary Statistics 5, 6, and 7}
+\subsection{Description}
+\begin{frame}
+  \centering
+  \includegraphics[width=10cm, angle=0]{distexample}
+ \end{frame}
+
+\subsection{Data}
+\begin{frame}
+  \centering
+  \includegraphics[width=7cm, angle=0]{dd_rr_distance}
+  \includegraphics[width=7cm, angle=0]{dr_dd_distance}
+  \includegraphics[width=7cm, angle=0]{dr_rr_distance}
+\end{frame}
+
+\section{Analysis}
+\begin{frame}
+  \centering
+  \includegraphics[width=10cm, angle=90]{correctsumstats}
+\end{frame}
+
+
+\end{document}
