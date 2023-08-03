@@ -56,7 +56,7 @@ evince FILENAME.pdf
 """
 It also creates a file in the main directory called correctsumstats.pdf which is an assessment of the accuracy for the first 3 summary statistics. It then shows that accuracy of a majority rules system where it counts how many trees return 2 out of the 3 sumstats as correct identifications.
 
-##Building Paper and Slides
+## Building Paper and Slides
 To construct the research paper and slide show from their latex files. First, make sure you have all the nesessary latex files. If you are running a bare-bones version of latex you likely will not be able to construct the paper and slides.
 To get all of the necessary files you can do a
 """
